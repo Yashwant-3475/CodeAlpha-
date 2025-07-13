@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Gallery</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #1e3a8a, #9333ea);
+        }
+        .gallery img {
+            transition: transform 0.3s ease-in-out;
+        }
+        .gallery img:hover {
+            transform: scale(1.1);
+        }
+        .lightbox {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s;
+        }
+        .lightbox.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .lightbox img {
+            max-width: 90%;
+            max-height: 80%;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="text-white flex flex-col items-center justify-center min-h-screen p-4">
+
+    <h1 class="text-3xl font-bold mb-6">📸 Image Gallery</h1>
+
+    <!-- Image Grid -->
+    <div class="gallery grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <img src="/0C02F490-8260-42F4-8624-C34A17E26115.jpeg" alt="Image 1" class="cursor-pointer rounded-lg shadow-lg object-cover w-40 h-40" onclick="openLightbox(0)">
+        <img src="/1C044C85-9696-4272-BC78-FEC002F56FC5.jpeg" alt="Image 2" class="cursor-pointer rounded-lg shadow-lg object-cover w-40 h-40" onclick="openLightbox(1)">
+        <img src="/A92DEB70-40ED-4922-825B-30D9C38CA61B.jpeg" alt="Image 3" class="cursor-pointer rounded-lg shadow-lg object-cover w-40 h-40" onclick="openLightbox(2)">
+        <img src="/4CAC969B-A117-43D1-A4E1-3259401B54ED.jpeg" alt="Image 4" class="cursor-pointer rounded-lg shadow-lg object-cover w-40 h-40" onclick="openLightbox(3)">
+        <img src="/762948D8-4412-4459-9AEF-D2249120025C.jpeg" alt="Image 5" class="cursor-pointer rounded-lg shadow-lg object-cover w-40 h-40" onclick="openLightbox(4)">
+        <img src="/8CD66207-792A-4C36-802D-ADDF6167ED36.jpeg" alt="Image 6" class="cursor-pointer rounded-lg shadow-lg object-cover w-40 h-40" onclick="openLightbox(5)">
+    </div>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+        <button class="absolute top-5 right-5 text-2xl text-white" onclick="closeLightbox()">Close</button>
+        <button class="absolute left-5 text-3xl text-white" onclick="prevImage(event)">⬅️</button>
+        <img id="lightboxImage" src="" alt="Full Image">
+        <button class="absolute right-5 text-3xl text-white" onclick="nextImage(event)">➡️</button>
+    </div>
+
+    <script>
+        const images = document.querySelectorAll(".gallery img");
+        const lightbox = document.getElementById("lightbox");
+        const lightboxImage = document.getElementById("lightboxImage");
+        let currentIndex = 0;
+
+        function openLightbox(index) {
+            currentIndex = index;
+            lightboxImage.src = images[currentIndex].src;
+            lightbox.classList.add("active");
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove("active");
+        }
+
+        function nextImage(event) {
+            event.stopPropagation();
+            currentIndex = (currentIndex + 1) % images.length;
+            lightboxImage.src = images[currentIndex].src;
+        }
+
+        function prevImage(event) {
+            event.stopPropagation();
+            currentIndex = (currentIndex - 1 + images.length) % images.length;
+            lightboxImage.src = images[currentIndex].src;
+        }
+    </script>
+
+</body>
+</html>
